@@ -86,6 +86,8 @@ cd docs && python3 -m http.server 4000
 docker compose up -d
 ```
 
+> 🇨🇳 国内网络拉取镜像超时？见[第1章「镜像加速」小节](docs/ch01.md)——用加速站前缀拉取后重打标签即可。
+
 | 服务 | 地址 | 用途 |
 |:---|:---|:---|
 | Flink Web UI | http://localhost:8081 | 任务提交与监控 |
