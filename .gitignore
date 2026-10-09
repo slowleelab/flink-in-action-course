@@ -1,0 +1,38 @@
+# ---- Java / Maven ----
+target/
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+dependency-reduced-pom.xml
+
+# ---- IDE ----
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+
+# ---- Logs ----
+*.log
+logs/
+
+# ---- Local data ----
+data/*.db
+checkpoint-dir/
+savepoint-dir/
+code/.m2-repo/
+.workbuddy/
+
+# ---- Docs ----
+docs/node_modules/
+docs/vendor/*.map
+
+# ---- Secrets ----
+*.env
+!docker/.env.example

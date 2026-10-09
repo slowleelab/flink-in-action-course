@@ -1,0 +1,97 @@
+# =====================================================================
+# Flink 实战课程 - 一键实验环境
+# 用法: docker compose up -d
+# 停止: docker compose down          (保留数据)
+# 清空: docker compose down -v       (删除所有数据卷)
+# =====================================================================
+services:
+
+  # -------------------- Flink Standalone 集群 --------------------
+  jobmanager:
+    image: flink:1.20
+    container_name: flink-jobmanager
+    ports:
+      - "8081:8081"          # Web UI
+    command: jobmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        state.checkpoints.dir: file:///opt/flink/checkpoints
+        state.savepoints.dir: file:///opt/flink/savepoints
+        execution.checkpointing.interval: 60s
+    volumes:
+      - flink-checkpoints:/opt/flink/checkpoints
+      - flink-savepoints:/opt/flink/savepoints
+
+  taskmanager:
+    image: flink:1.20
+    container_name: flink-taskmanager
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    scale: 2
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 4
+        state.backend: rocksdb
+    volumes:
+      - flink-checkpoints:/opt/flink/checkpoints
+      - flink-savepoints:/opt/flink/savepoints
+
+  # -------------------- Kafka (KRaft 模式，无需 ZooKeeper) --------------------
+  kafka:
+    image: bitnami/kafka:3.7
+    container_name: flink-kafka
+    ports:
+      - "9092:9092"          # 内部/宿主机访问
+    environment:
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    volumes:
+      - kafka-data:/bitnami/kafka
+
+  # -------------------- MySQL（CDC 源 + 结果表） --------------------
+  mysql:
+    image: mysql:8.0
+    container_name: flink-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=flink123
+      - MYSQL_DATABASE=flink_course
+    command:
+      --server-id=1
+      --log-bin=mysql-bin
+      --binlog-format=ROW
+      --binlog_row_image=FULL
+      --gtid_mode=ON
+      --enforce_gtid_consistency=ON
+    volumes:
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+      - mysql-data:/var/lib/mysql
+
+  # -------------------- Redis（实时去重 / 维表） --------------------
+  redis:
+    image: redis:7-alpine
+    container_name: flink-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+
+volumes:
+  flink-checkpoints:
+  flink-savepoints:
+  kafka-data:
+  mysql-data:
+  redis-data:

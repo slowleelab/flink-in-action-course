@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Flink 实战：从 0 到 1 · 零基础场景驱动实战课程</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="面向零基础、以真实业务场景驱动的 Apache Flink 实战课程：实时数仓、反欺诈、IoT 监控，从环境搭建一路打到生产调优。">
+  <link rel="icon" href="_media/favicon.svg" type="image/svg+xml">
+  <!-- 主题：亮/暗切换 -->
+  <link rel="stylesheet" href="vendor/theme-darklight.css">
+  <!-- 课程定制样式 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">🚀 文档加载中，请稍候……</div>
+
+  <script>
+    window.$docsify = {
+      // ---- 基本信息 ----
+      name: 'Flink 实战',
+      homepage: 'home.md',
+      loadSidebar: true,
+      loadNavbar: true,
+      coverpage: true,
+      auto2top: true,
+      maxLevel: 3,
+      subMaxLevel: 3,
+
+      // ---- 全文搜索 ----
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: { '/': '🔍 搜索章节内容' },
+        noData: { '/': '😵 没有找到结果' },
+        depth: 3
+      },
+
+      // ---- 代码复制按钮 ----
+      copyCode: {
+        buttonText: { '/': '复制' },
+        errorText: { '/': '复制失败' },
+        successText: { '/': '✅ 已复制' }
+      },
+
+      // ---- Mermaid 图表 ----
+      mermaidConfig: { querySelector: '.mermaid' }
+    };
+
+    // Mermaid 初始化（docsify-mermaid 插件在每次渲染后调用 mermaid.run）
+    if (window.mermaid) {
+      window.mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
+    }
+  </script>
+
+  <!-- 核心与插件（全部本地化，离线可用） -->
+  <script src="vendor/docsify.min.js"></script>
+  <script src="vendor/theme-darklight.js"></script>
+  <script src="vendor/search.min.js"></script>
+  <script src="vendor/docsify-copy-code.min.js"></script>
+  <script src="vendor/mermaid.min.js"></script>
+  <script>
+    // mermaid UMD 包加载后再初始化（保证覆盖上面 if 判断时序）
+    window.mermaid && window.mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
+  </script>
+  <script src="vendor/docsify-mermaid.js"></script>
+</body>
+</html>

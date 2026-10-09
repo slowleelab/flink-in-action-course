@@ -1,0 +1,105 @@
+/* =====================================================
+   Flink 实战课程 - 定制样式（叠加在 darklight 主题之上）
+   ===================================================== */
+
+:root {
+  --flink-pink: #E6526F;
+  --flink-dark: #002238;
+  --callout-tip: #42b983;
+  --callout-warn: #f66d4b;
+}
+
+/* ---------- 首字块：章节标题更醒目 ---------- */
+h1 {
+  padding-bottom: .3em;
+  border-bottom: 2px solid var(--flink-pink);
+}
+
+/* ---------- 代码块 ---------- */
+pre[data-lang] {
+  position: relative;
+  border-radius: 8px;
+}
+code, pre {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+}
+
+/* ---------- 行内代码 ---------- */
+code {
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+
+/* ---------- 提示 / 警告（docsify ?> 与 !> 语法） ---------- */
+.tip {
+  border-left: 4px solid var(--callout-tip) !important;
+  background-color: rgba(66, 185, 131, .08) !important;
+}
+.warn {
+  border-left: 4px solid var(--callout-warn) !important;
+  background-color: rgba(246, 109, 75, .08) !important;
+}
+
+/* ---------- 表格 ---------- */
+table {
+  display: table;
+  width: 100%;
+}
+th {
+  white-space: nowrap;
+}
+
+/* ---------- Mermaid 图容器：居中 + 留白 ---------- */
+.mermaid {
+  text-align: center;
+  margin: 1.2em auto;
+}
+
+/* ---------- 封面页 ---------- */
+section.cover.show {
+  background: linear-gradient(135deg, #1b2735 0%, #090a0f 100%) !important;
+}
+section.cover h1 {
+  border: none !important;
+}
+.cover-main h1 .anchor span {
+  color: #fff !important;
+}
+
+/* ---------- 章节导航（底部上一章/下一章） ---------- */
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 3em;
+  padding-top: 1.2em;
+  border-top: 1px dashed #ccc;
+}
+.chapter-nav a {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(230, 82, 111, .1);
+  color: var(--flink-pink);
+  text-decoration: none;
+  font-weight: 600;
+}
+.chapter-nav a:hover {
+  background: var(--flink-pink);
+  color: #fff;
+}
+
+/* ---------- 搜索框 ---------- */
+.sidebar .search input {
+  border-radius: 6px;
+}
+
+/* ---------- 侧边栏当前项 ---------- */
+.sidebar ul li.active > a {
+  border-right: 3px solid var(--flink-pink);
+}
+
+/* ---------- 暗色模式下的 mermaid 兼容 ---------- */
+body.dark .mermaid {
+  filter: invert(0.9) hue-rotate(180deg);
+}
