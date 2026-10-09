@@ -26,7 +26,8 @@ services:
 
   taskmanager:
     image: flink:1.20
-    container_name: flink-taskmanager
+    # 注意：设置了 scale 就不能用 container_name（容器名必须唯一）
+    # Compose 会自动生成 flink-taskmanager-1、flink-taskmanager-2 ...
     depends_on:
       - jobmanager
     command: taskmanager
