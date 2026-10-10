@@ -1,5 +1,7 @@
 package com.flinkcourse.ch11;
 
+import com.flinkcourse.common.util.KafkaUtil;
+
 import com.flinkcourse.common.util.JsonUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.AggregateFunction;
@@ -40,7 +42,7 @@ public class DwsGmvJob {
         env.setParallelism(2);
 
         KafkaSource<String> source = KafkaSource.<String>builder()
-                .setBootstrapServers("localhost:9092")
+                .setBootstrapServers(KafkaUtil.BOOTSTRAP)
                 .setTopics("dwd_order")
                 .setGroupId("dws-gmv")
                 .setStartingOffsets(OffsetsInitializer.earliest())

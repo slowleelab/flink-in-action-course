@@ -1,5 +1,7 @@
 package com.flinkcourse.ch11;
 
+import com.flinkcourse.common.util.KafkaUtil;
+
 import com.flinkcourse.common.util.JsonUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
@@ -37,7 +39,7 @@ public class DwdCleanJob {
 
         // ---- Source：ODS 原始层 ----
         KafkaSource<String> source = KafkaSource.<String>builder()
-                .setBootstrapServers("localhost:9092")
+                .setBootstrapServers(KafkaUtil.BOOTSTRAP)
                 .setTopics("ods_user_action")
                 .setGroupId("dwd-clean")
                 .setStartingOffsets(OffsetsInitializer.earliest())
@@ -46,7 +48,7 @@ public class DwdCleanJob {
 
         // ---- Sink：DWD 明细层 ----
         KafkaSink<String> sink = KafkaSink.<String>builder()
-                .setBootstrapServers("localhost:9092")
+                .setBootstrapServers(KafkaUtil.BOOTSTRAP)
                 .setRecordSerializer(KafkaRecordSerializationSchema.builder()
                         .setTopic("dwd_order")
                         .setValueSerializationSchema(new SimpleStringSchema())

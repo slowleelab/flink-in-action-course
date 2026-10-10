@@ -1,5 +1,7 @@
 package com.flinkcourse.ch03;
 
+import com.flinkcourse.common.util.KafkaUtil;
+
 import com.flinkcourse.common.model.Order;
 import com.flinkcourse.common.util.JsonUtil;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
@@ -49,7 +51,7 @@ public class OrderCleanJob {
     /** Kafka Source：生产 90% 场景的标配（详见第10章） */
     private static KafkaSource<String> buildKafkaSource() {
         return KafkaSource.<String>builder()
-                .setBootstrapServers("localhost:9092")
+                .setBootstrapServers(KafkaUtil.BOOTSTRAP)
                 .setTopics("ods_orders")
                 .setGroupId("order-clean")
                 .setStartingOffsets(OffsetsInitializer.earliest())

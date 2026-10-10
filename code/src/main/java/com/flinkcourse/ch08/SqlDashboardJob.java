@@ -1,5 +1,7 @@
 package com.flinkcourse.ch08;
 
+import com.flinkcourse.common.util.KafkaUtil;
+
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
@@ -42,7 +44,7 @@ public class SqlDashboardJob {
             ") WITH (\n" +
             "  'connector' = 'kafka',\n" +
             "  'topic' = 'ods_orders',\n" +
-            "  'properties.bootstrap.servers' = 'localhost:9092',\n" +
+            "  'properties.bootstrap.servers' = '" + KafkaUtil.BOOTSTRAP + "',\n" +
             "  'properties.group.id' = 'sql-dashboard',\n" +
             "  'scan.startup.mode' = 'earliest-offset',\n" +
             "  'format' = 'json',\n" +

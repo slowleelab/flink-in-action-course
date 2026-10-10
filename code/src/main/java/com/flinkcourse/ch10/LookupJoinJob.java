@@ -1,5 +1,7 @@
 package com.flinkcourse.ch10;
 
+import com.flinkcourse.common.util.KafkaUtil;
+
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
@@ -36,7 +38,7 @@ public class LookupJoinJob {
             ") WITH (\n" +
             "  'connector' = 'kafka',\n" +
             "  'topic' = 'ods_orders',\n" +
-            "  'properties.bootstrap.servers' = 'localhost:9092',\n" +
+            "  'properties.bootstrap.servers' = '" + KafkaUtil.BOOTSTRAP + "',\n" +
             "  'properties.group.id' = 'lookup-join-demo',\n" +
             "  'scan.startup.mode' = 'earliest-offset',\n" +
             "  'format' = 'json',\n" +

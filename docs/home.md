@@ -2,7 +2,7 @@
 
 > 一套**零基础起步、真实业务场景驱动、直通生产实践**的 Apache Flink 系统课程。
 
-![难度](https://img.shields.io/badge/难度-零基础入门-green) ![Flink](https://img.shields.io/badge/Flink-1.20.0-E6526F) ![章节](https://img.shields.io/badge/章节-16章-blue) ![License](https://img.shields.io/badge/License-Apache--2.0-blue)
+![难度](https://img.shields.io/badge/难度-零基础入门-green) ![Flink](https://img.shields.io/badge/Flink-1.20.1-E6526F) ![章节](https://img.shields.io/badge/章节-16章-blue) ![License](https://img.shields.io/badge/License-Apache--2.0-blue)
 
 ---
 

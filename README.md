@@ -5,7 +5,7 @@
 **一套面向零基础同学、以真实业务场景驱动的 Apache Flink 实战课程**
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Flink](https://img.shields.io/badge/Flink-1.20.0-E6526F.svg)](https://flink.apache.org)
+[![Flink](https://img.shields.io/badge/Flink-1.20.1-E6526F.svg)](https://flink.apache.org)
 [![Java](https://img.shields.io/badge/Java-11+-orange.svg)](https://openjdk.org)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
@@ -91,7 +91,7 @@ docker compose up -d
 | 服务 | 地址 | 用途 |
 |:---|:---|:---|
 | Flink Web UI | http://localhost:8081 | 任务提交与监控 |
-| Kafka | localhost:9092 | 数据源/数据总线 |
+| Kafka | localhost:9092 | 数据源/数据总线（复用宿主机已有实例） |
 | MySQL | localhost:3306 | CDC 源、结果表 |
 | Redis | localhost:6379 | 实时维表、去重 |
 
@@ -130,7 +130,7 @@ flink/
 
 | 组件 | 版本 | 说明 |
 |:---|:---|:---|
-| Apache Flink | 1.20.0 | 当前 1.x 稳定线（2.x 变化见第15章附录） |
+| Apache Flink | 1.20.1 | 当前 1.x 稳定线（2.x 变化见第15章附录） |
 | flink-connector-kafka | 3.3.0-1.20 | Kafka Source/Sink |
 | flink-connector-jdbc | 3.3.0-1.20 | JDBC Sink |
 | flink-connector-mysql-cdc | 3.3.0 | MySQL CDC |

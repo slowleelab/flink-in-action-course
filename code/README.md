@@ -7,13 +7,21 @@
 | 组件 | 版本 |
 |:---|:---|
 | Java | 11+（兼容 8/17） |
-| Apache Flink | 1.20.0 |
+| Apache Flink | 1.20.1 |
 | flink-connector-kafka | 3.3.0-1.20 |
 | flink-connector-jdbc | 3.3.0-1.20 |
 | flink-connector-mysql-cdc | 3.3.0 |
 | Kafka | 3.7（docker，KRaft 模式） |
 
 > 提交集群时：把 pom 中 flink-* 依赖改 `provided` 并配 maven-shade-plugin（详见文档第14章 Checklist）。
+
+## Kafka 连接地址
+
+所有作业统一通过 `KafkaUtil.BOOTSTRAP` 读取（默认 `localhost:9092`）。若本机 Kafka 端口不同：
+
+```bash
+export KAFKA_BOOTSTRAP=localhost:9094   # 例如复用其他项目监听在 9094 的 Kafka
+```
 
 ## 示例运行速查表
 
