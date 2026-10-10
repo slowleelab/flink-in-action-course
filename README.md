@@ -133,7 +133,7 @@ flink/
 | Apache Flink | 1.20.1 | 当前 1.x 稳定线（2.x 变化见第15章附录） |
 | flink-connector-kafka | 3.3.0-1.20 | Kafka Source/Sink |
 | flink-connector-jdbc | 3.3.0-1.20 | JDBC Sink |
-| flink-connector-mysql-cdc | 3.3.0 | MySQL CDC |
+| flink-connector-mysql-cdc | 3.6.0-1.20 | MySQL CDC |
 | Java | 11+ | 同时兼容 8/17 |
 | Kafka | 3.7 (KRaft) | 无需 ZooKeeper |
 

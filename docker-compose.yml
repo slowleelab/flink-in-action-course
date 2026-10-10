@@ -70,38 +70,41 @@ services:
   #   volumes:
   #     - kafka-data:/var/lib/kafka/data
 
-  # -------------------- MySQL（CDC 源 + 结果表） --------------------
-  mysql:
-    image: mysql:8.0
-    container_name: flink-mysql
-    ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=flink123
-      - MYSQL_DATABASE=flink_course
-    command:
-      --server-id=1
-      --log-bin=mysql-bin
-      --binlog-format=ROW
-      --binlog_row_image=FULL
-      --gtid_mode=ON
-      --enforce_gtid_consistency=ON
-    volumes:
-      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
-      - mysql-data:/var/lib/mysql
-
-  # -------------------- Redis（实时去重 / 维表） --------------------
-  redis:
-    image: redis:7-alpine
-    container_name: flink-redis
-    ports:
-      - "6379:6379"
-    command: redis-server --appendonly yes
-    volumes:
-      - redis-data:/data
+  # -------------------- MySQL / Redis / Kafka --------------------
+  # 公共组件全部复用本机已有实例（避免资源浪费与端口冲突）：
+  #   Kafka  → localhost:9094（lumio-kafka 的 HOST 监听；作业前 export KAFKA_BOOTSTRAP=localhost:9094）
+  #   Redis  → localhost:6379（lumio-redis，无密码）
+  #   MySQL  → localhost:3306（本机 Homebrew MySQL）
+  # 课程只部署 Flink 集群本身。如需独立部署全套环境，取消下方注释并调整端口：
+  #
+  # mysql:
+  #   image: mysql:8.0
+  #   container_name: flink-mysql
+  #   ports:
+  #     - "13306:3306"               # 避开本机 MySQL
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=flink123
+  #     - MYSQL_DATABASE=flink_course
+  #   command:
+  #     --server-id=1
+  #     --log-bin=mysql-bin
+  #     --binlog-format=ROW
+  #     --binlog_row_image=FULL
+  #     --gtid_mode=ON
+  #     --enforce_gtid_consistency=ON
+  #   volumes:
+  #     - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+  #     - mysql-data:/var/lib/mysql
+  #
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: flink-redis
+  #   ports:
+  #     - "16379:6379"               # 避开本机/lumio Redis
+  #   command: redis-server --appendonly yes
+  #   volumes:
+  #     - redis-data:/data
 
 volumes:
   flink-checkpoints:
   flink-savepoints:
-  mysql-data:
-  redis-data:

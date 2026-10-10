@@ -29,7 +29,7 @@
         <flink.version>1.20.1</flink.version>
         <kafka.connector.version>3.3.0-1.20</kafka.connector.version>
         <jdbc.connector.version>3.3.0-1.20</jdbc.connector.version>
-        <mysql.cdc.version>3.3.0</mysql.cdc.version>
+        <mysql.cdc.version>3.6.0-1.20</mysql.cdc.version>
         <kafka.clients.version>3.7.0</kafka.clients.version>
         <jedis.version>4.4.6</jedis.version>
         <mysql.jdbc.version>8.0.33</mysql.jdbc.version>

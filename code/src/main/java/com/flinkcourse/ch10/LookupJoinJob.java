@@ -1,5 +1,7 @@
 package com.flinkcourse.ch10;
 
+import com.flinkcourse.common.util.MysqlUtil;
+
 import com.flinkcourse.common.util.KafkaUtil;
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -54,10 +56,10 @@ public class LookupJoinJob {
             "  PRIMARY KEY (city_id) NOT ENFORCED\n" +
             ") WITH (\n" +
             "  'connector' = 'jdbc',\n" +
-            "  'url' = 'jdbc:mysql://localhost:3306/flink_course',\n" +
+            "  'url' = '" + MysqlUtil.URL_PREFIX + "flink_course',\n" +
             "  'table-name' = 'dim_city',\n" +
-            "  'username' = 'root',\n" +
-            "  'password' = 'flink123',\n" +
+            "  'username' = '" + MysqlUtil.USER + "',\n" +
+            "  'password' = '" + MysqlUtil.PASSWORD + "',\n" +
             "  'lookup.cache.max-rows' = '500',\n" +     // 缓存 500 行
             "  'lookup.cache.ttl' = '10min'\n" +         // 10 分钟过期（维表变更容忍度）
             ")");

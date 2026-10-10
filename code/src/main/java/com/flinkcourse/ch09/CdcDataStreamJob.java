@@ -1,5 +1,7 @@
 package com.flinkcourse.ch09;
 
+import com.flinkcourse.common.util.MysqlUtil;
+
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;
@@ -25,12 +27,12 @@ public class CdcDataStreamJob {
         env.enableCheckpointing(10_000);   // CDC 的全量分片进度存在状态里，CP 保证断点续传
 
         MySqlSource<String> mySqlSource = MySqlSource.<String>builder()
-                .hostname("localhost")
-                .port(3306)
+                .hostname(MysqlUtil.HOST_BASE)
+                .port(Integer.parseInt(MysqlUtil.PORT))
                 .databaseList("flink_course")            // 库级监听
                 .tableList("flink_course.orders")        // 精确到表
-                .username("root")
-                .password("flink123")
+                .username(MysqlUtil.USER)
+                .password(MysqlUtil.PASSWORD)
                 .serverTimeZone("Asia/Shanghai")
                 .deserializer(new SimpleStringDeserializer())   // 自定义反序列化（见下）
                 .build();

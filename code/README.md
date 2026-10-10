@@ -10,17 +10,30 @@
 | Apache Flink | 1.20.1 |
 | flink-connector-kafka | 3.3.0-1.20 |
 | flink-connector-jdbc | 3.3.0-1.20 |
-| flink-connector-mysql-cdc | 3.3.0 |
-| Kafka | 3.7（docker，KRaft 模式） |
+| flink-connector-mysql-cdc | 3.6.0-1.20 |
+| MySQL | 8.0+（含 9.x） |
+| Kafka | 3.7（KRaft 模式） |
 
 > 提交集群时：把 pom 中 flink-* 依赖改 `provided` 并配 maven-shade-plugin（详见文档第14章 Checklist）。
 
-## Kafka 连接地址
+## 连接配置（环境变量外置）
 
-所有作业统一通过 `KafkaUtil.BOOTSTRAP` 读取（默认 `localhost:9092`）。若本机 Kafka 端口不同：
+所有外部组件地址统一走 `common/util` 下的工具类 + 环境变量覆盖，**不改代码即可适配任意环境**（生产配置外置实践）：
+
+| 环境变量 | 默认值 | 说明 |
+|:---|:---|:---|
+| `KAFKA_BOOTSTRAP` | `localhost:9092` | KafkaUtil：bootstrap 地址 |
+| `MYSQL_HOST` | `localhost` | MysqlUtil：主机（CDC hostname） |
+| `MYSQL_PORT` | `3306` | MysqlUtil：端口 |
+| `MYSQL_USER` | `root` | MysqlUtil：用户名 |
+| `MYSQL_PASSWORD` | `flink123` | MysqlUtil：密码 |
+| `REDIS_HOST` / `REDIS_PORT` | `localhost` / `6379` | RedisUtil：地址 |
+
+**复用本机已有公共组件**时，运行前 export 即可，例如：
 
 ```bash
-export KAFKA_BOOTSTRAP=localhost:9094   # 例如复用其他项目监听在 9094 的 Kafka
+export KAFKA_BOOTSTRAP=localhost:9094   # 复用其他项目监听在 9094 的 Kafka
+export MYSQL_USER=root MYSQL_PASSWORD=你的密码   # 复用本机 MySQL
 ```
 
 ## 示例运行速查表
@@ -68,6 +81,6 @@ mvn exec:exec -Dexec.mainClass="com.flinkcourse.ch02.StreamWordCount"
 src/main/java/com/flinkcourse/
 ├── common/
 │   ├── model/    # Order / UserAction / UserClick / TransferEvent / DeviceMetric
-│   └── util/     # JsonUtil（教学级极简 JSON 解析）
+│   └── util/     # JsonUtil / KafkaUtil / MysqlUtil / RedisUtil（连接配置外置）
 ├── ch02/ ~ ch13/ # 各章节示例（详见文档对应章节）
 ```

@@ -1,9 +1,14 @@
 -- =====================================================================
--- Flink 实战课程 - MySQL 初始化脚本（容器首次启动时自动执行）
--- 用途：
+-- Flink 实战课程 - MySQL 初始化脚本
+-- 用法：
+--   本机共用模式：mysql -uroot -p < docker/mysql/init/01_init.sql
+--   独立部署模式：容器首次启动时自动执行（MYSQL_DATABASE=flink_course 已建库）
+-- 内容：
 --   1. orders 表   —— 第9章 CDC 演示源表 / 第10章 JDBC Sink 目标表
 --   2. dws_gmv     —— 第8/11章 Flink SQL 写入的实时结果表
 -- =====================================================================
+CREATE DATABASE IF NOT EXISTS flink_course
+    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE flink_course;
 
 -- ---------- 订单表：CDC 源表 ----------
@@ -57,6 +62,9 @@ CREATE TABLE IF NOT EXISTS dim_city (
 INSERT INTO dim_city (city_name, province) VALUES
 ('深圳', '广东省'), ('杭州', '浙江省'), ('北京', '北京市'), ('上海', '上海市'), ('成都', '四川省'), ('武汉', '湖北省');
 
--- 授权（CDC 需要专用账号，演示直接用 root，生产严禁如此）
-GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'root'@'%';
+-- CDC 专用账号（显式建用户 + 授权；MySQL 8+ 禁止 GRANT 隐式建用户）
+-- 密码需满足 validate_password 组件策略（本机/云上 MySQL 常默认开启）
+-- 本地开发演示可直接用 root，生产严禁如此
+CREATE USER IF NOT EXISTS 'flink'@'%' IDENTIFIED BY 'Flink@Course2026';
+GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'flink'@'%';
 FLUSH PRIVILEGES;

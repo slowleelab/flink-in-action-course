@@ -1,5 +1,7 @@
 package com.flinkcourse.ch08;
 
+import com.flinkcourse.common.util.MysqlUtil;
+
 import com.flinkcourse.common.util.KafkaUtil;
 
 import org.apache.flink.streaming.api.CheckpointingMode;
@@ -61,10 +63,10 @@ public class SqlDashboardJob {
             "  PRIMARY KEY (stat_time, city) NOT ENFORCED\n" +
             ") WITH (\n" +
             "  'connector' = 'jdbc',\n" +
-            "  'url' = 'jdbc:mysql://localhost:3306/flink_course',\n" +
+            "  'url' = '" + MysqlUtil.URL_PREFIX + "flink_course',\n" +
             "  'table-name' = 'dws_gmv',\n" +
-            "  'username' = 'root',\n" +
-            "  'password' = 'flink123'\n" +
+            "  'username' = '" + MysqlUtil.USER + "',\n" +
+            "  'password' = '" + MysqlUtil.PASSWORD + "'\n" +
             ")");
 
         // ③ 核心逻辑：一行 SQL = 第5章滚动窗口 GMV 的全部代码

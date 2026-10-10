@@ -1,5 +1,7 @@
 package com.flinkcourse.ch11;
 
+import com.flinkcourse.common.util.MysqlUtil;
+
 import com.flinkcourse.common.util.KafkaUtil;
 
 import com.flinkcourse.common.util.JsonUtil;
@@ -77,10 +79,10 @@ public class DwsGmvJob {
                         .build())
                 .buildAtLeastOnce(
                         new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-                                .withUrl("jdbc:mysql://localhost:3306/flink_course"
+                                .withUrl(MysqlUtil.URL_PREFIX + "flink_course"
                                         + "?useSSL=false&serverTimezone=Asia/Shanghai")
                                 .withDriverName("com.mysql.cj.jdbc.Driver")
-                                .withUsername("root").withPassword("flink123")
+                                .withUsername(MysqlUtil.USER).withPassword(MysqlUtil.PASSWORD)
                                 .build());
 
         aggregated.sinkTo(mysqlSink)

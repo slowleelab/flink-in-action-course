@@ -1,5 +1,7 @@
 package com.flinkcourse.ch09;
 
+import com.flinkcourse.common.util.MysqlUtil;
+
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
@@ -36,10 +38,10 @@ public class CdcSqlJob {
             "  PRIMARY KEY (order_id) NOT ENFORCED\n" +      // 主键 = upsert 依据（CDC 必需）
             ") WITH (\n" +
             "  'connector' = 'mysql-cdc',\n" +
-            "  'hostname' = 'localhost',\n" +
-            "  'port' = '3306',\n" +
-            "  'username' = 'root',\n" +
-            "  'password' = 'flink123',\n" +
+            "  'hostname' = '" + MysqlUtil.HOST_BASE + "',\n" +
+            "  'port' = '" + MysqlUtil.PORT + "',\n" +
+            "  'username' = '" + MysqlUtil.USER + "',\n" +
+            "  'password' = '" + MysqlUtil.PASSWORD + "',\n" +
             "  'database-name' = 'flink_course',\n" +
             "  'table-name' = 'orders',\n" +
             "  'server-time-zone' = 'Asia/Shanghai'\n" +    // 容器默认 UTC，必配！

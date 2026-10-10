@@ -1,5 +1,6 @@
 package com.flinkcourse.ch10;
 
+import com.flinkcourse.common.util.RedisUtil;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -9,7 +10,7 @@ import redis.clients.jedis.JedisPooled;
 /**
  * 第10章：自定义 Redis Sink（Jedis 实现，含连接管理教学）
  *
- * 前置条件：docker compose 环境（Redis 6379）
+ * 前置条件：本机 Redis（默认 localhost:6379，可用 REDIS_HOST/REDIS_PORT 覆盖）
  *
  * 知识点（连接管理铁律）：
  *   - open() 建连接（每个并行子任务一次）
@@ -18,12 +19,13 @@ import redis.clients.jedis.JedisPooled;
  *   - 严禁在 invoke() 里每条数据建连接（TCP+AUTH 握手 × QPS = 性能灾难）
  *
  * 运行：IDEA 运行 main，然后验证：
- *   docker exec flink-redis redis-cli ZREVRANGE city:rank:today 0 -1 WITHSCORES
+ *   redis-cli ZREVRANGE city:rank:today 0 -1 WITHSCORES
  */
 public class RedisSinkDemo {
 
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setParallelism(1);   // 小数据量 demo，本地跑无需多并行度
 
         env.fromElements(
                 Tuple2.of("深圳", 1598.0),
@@ -45,7 +47,7 @@ public class RedisSinkDemo {
         @Override
         public void open(Configuration parameters) {
             // 每个并行子任务启动时建一次连接（生产：连接池 + 环境变量注入地址）
-            jedis = new JedisPooled("localhost", 6379);
+            jedis = new JedisPooled(RedisUtil.HOST, RedisUtil.PORT);
         }
 
         @Override

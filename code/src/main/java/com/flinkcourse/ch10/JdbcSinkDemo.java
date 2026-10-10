@@ -1,5 +1,7 @@
 package com.flinkcourse.ch10;
 
+import com.flinkcourse.common.util.MysqlUtil;
+
 import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
 import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 import org.apache.flink.connector.jdbc.sink.JdbcSink;
@@ -47,11 +49,11 @@ public class JdbcSinkDemo {
                         .build())
                 .buildAtLeastOnce(
                         new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-                                .withUrl("jdbc:mysql://localhost:3306/flink_course"
+                                .withUrl(MysqlUtil.URL_PREFIX + "flink_course"
                                         + "?useSSL=false&serverTimezone=Asia/Shanghai")
                                 .withDriverName("com.mysql.cj.jdbc.Driver")
-                                .withUsername("root")
-                                .withPassword("flink123")
+                                .withUsername(MysqlUtil.USER)
+                                .withPassword(MysqlUtil.PASSWORD)
                                 .build());
 
         env.fromElements(
