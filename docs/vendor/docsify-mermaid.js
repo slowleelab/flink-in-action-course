@@ -142,7 +142,18 @@ var plugin = function plugin(mermaidConf) {
       next(htmlElement.innerHTML);
     });
     hook.doneEach(function () {
-      return mermaid.run(mermaidConf);
+      // 逐图渲染并隔离失败：一张图解析错误只在控制台告警，不影响其余图
+      var selector = (mermaidConf && mermaidConf.querySelector) || '.mermaid';
+      var nodes = document.querySelectorAll(selector);
+      var stamp = Date.now();
+      nodes.forEach(function (el, idx) {
+        if (!el.id) {
+          el.id = 'mermaid-diagram-' + stamp + '-' + idx;
+        }
+        mermaid.run({ querySelector: '#' + CSS.escape(el.id) }).catch(function (err) {
+          console.warn('[docsify-mermaid] diagram parse error:', err && err.message ? err.message : err);
+        });
+      });
     });
   };
 };
