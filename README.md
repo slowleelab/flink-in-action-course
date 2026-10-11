@@ -8,6 +8,9 @@
 [![Flink](https://img.shields.io/badge/Flink-1.20.1-E6526F.svg)](https://flink.apache.org)
 [![Java](https://img.shields.io/badge/Java-11+-orange.svg)](https://openjdk.org)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![在线阅读](https://img.shields.io/badge/📖_在线阅读-GitHub_Pages-8A2BE2.svg)](https://slowleelab.github.io/flink-in-action-course/)
+
+**📖 在线阅读（推荐）**：https://slowleelab.github.io/flink-in-action-course/
 
 [课程文档](docs/index.html) · [快速开始](#-快速开始) · [课程大纲](#%EF%B8%8F-课程大纲) · [加入贡献](CONTRIBUTING.md)
 
