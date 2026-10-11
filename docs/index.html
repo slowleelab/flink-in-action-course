@@ -26,6 +26,9 @@
       maxLevel: 3,
       subMaxLevel: 3,
 
+      // 文档请求强制跳过浏览器启发式缓存（内容更新后浏览器立即能看到）
+      requestHeaders: { 'cache-control': 'no-cache' },
+
       // ---- 全文搜索 ----
       search: {
         maxAge: 86400000,
