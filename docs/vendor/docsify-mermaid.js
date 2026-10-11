@@ -142,18 +142,26 @@ var plugin = function plugin(mermaidConf) {
       next(htmlElement.innerHTML);
     });
     hook.doneEach(function () {
-      // 逐图渲染并隔离失败：一张图解析错误只在控制台告警，不影响其余图
+      // 串行逐图渲染：单图解析错误只告警，不影响其余图。
+      // 注意必须 for + await 串行——并发调用多个 mermaid.run 会因内部
+      // 全局状态竞态导致随机多张图解析失败（SVG viewBox 为 null 的错误占位图）。
       var selector = (mermaidConf && mermaidConf.querySelector) || '.mermaid';
-      var nodes = document.querySelectorAll(selector);
+      var nodes = Array.prototype.slice.call(document.querySelectorAll(selector));
       var stamp = Date.now();
       nodes.forEach(function (el, idx) {
         if (!el.id) {
           el.id = 'mermaid-diagram-' + stamp + '-' + idx;
         }
-        mermaid.run({ querySelector: '#' + CSS.escape(el.id) }).catch(function (err) {
-          console.warn('[docsify-mermaid] diagram parse error:', err && err.message ? err.message : err);
-        });
       });
+      (async function () {
+        for (var i = 0; i < nodes.length; i++) {
+          try {
+            await mermaid.run({ querySelector: '#' + CSS.escape(nodes[i].id) });
+          } catch (err) {
+            console.warn('[docsify-mermaid] diagram parse error:', err && err.message ? err.message : err);
+          }
+        }
+      })();
     });
   };
 };
